@@ -180,6 +180,20 @@ public class TransactionService  {
     }
 
 
+    public void processCleanResult(String transactionID){
+
+        Transaction transaction = transactionRepository.findById(transactionID).orElseThrow(()-> new RuntimeException(
+            "Transaction not Found"+transactionID
+        ));
+
+        if(transaction.getStatus() != TransactionStatus.PROCESSING){
+            log.warn("Transaction {} not PROCESSING - skipping",transactionID);
+            return;
+        }
+
+        completeTransaction(transaction);
+    }
+
     private void completeTransaction(Transaction transaction){
         transaction.setStatus(TransactionStatus.COMPLETED);
         transaction.setCompletedAt(LocalDateTime.now());
