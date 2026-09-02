@@ -1,4 +1,4 @@
-package com.banking.paymentservice.model;
+package com.banking.paymentservice.entity;
 
 public enum PaymentStatus {
     CREATED,

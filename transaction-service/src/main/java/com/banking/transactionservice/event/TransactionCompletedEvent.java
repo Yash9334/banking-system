@@ -15,5 +15,7 @@ public class TransactionCompletedEvent {
     private String senderAccountNumber;
     private String receiverAccountNumber;
     private BigDecimal amount;
-    private String Description;
+    private String description;
 }
+
+

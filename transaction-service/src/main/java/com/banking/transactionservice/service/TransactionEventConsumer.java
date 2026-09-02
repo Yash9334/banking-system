@@ -84,15 +84,16 @@ public class TransactionEventConsumer {
 
     }
 
-//    @KafkaListener(topics = "fraud.check.clean")
-//    public void consumeFraudCheckCleanResult(@Payload Map<String,Object> payload){
-//
-//        try{
-//            String transactionId = (String) payload.get("transactionId");
-//            transactionService.processCleanResult(transactionId);
-//        }
-//        catch (Exception e){
-//            log.error("Error processing fraud check result: {}",e.getMessage());
-//        }
-//    }
+    @KafkaListener(topics = "fraud.check.clean")
+    public void consumeFraudCheckCleanResult(@Payload Map<String, Object> payload){
+        try{
+            String transactionId = (String) payload.get("transactionId");
+            transactionService.processCleanResult(transactionId);
+        }
+        catch (Exception e){
+            log.error("Error processing fraud check result: {}", e.getMessage());
+        }
+    }
 }
+
+

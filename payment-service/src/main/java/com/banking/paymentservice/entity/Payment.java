@@ -1,11 +1,8 @@
-package com.banking.paymentservice.model;
+package com.banking.paymentservice.entity;
 
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.LazyGroup;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.cglib.core.EmitUtils;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
