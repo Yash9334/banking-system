@@ -1,12 +1,20 @@
 package com.banking.paymentservice.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "payments")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Payment {
 
     @Id
