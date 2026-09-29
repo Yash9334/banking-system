@@ -39,6 +39,40 @@ public class NotificationService {
     }
 
 
+    public void consumeTransactionCompleted(@Payload Map<String, Object> payload){
+        try{
+            String senderAccount = (String) payload.get("senderAccountNumber");
+            String receiverAccount = (String) payload.get("receiverAccountNumber");
+            String amount = payload.get("amount").toString();
+
+            // DEBIT ALERT
+            sendAlert(senderAccount, "DEBIT ALERT",String.format("%s is debited from account %s",amount,receiverAccount));
+            sendAlert(receiverAccount,"CREDITALERT",String.format("%s credited to account %s",amount,senderAccount));
+
+        }catch (Exception e){
+            log.error("Error sending transaction notification: {}",e.getMessage());
+        }
+    }
+
+    public void consumeFraudDetected(@Payload Map<String, Object> payload){
+        try{
+            String accountNumber = (String) payload.get("accountNumber");
+            String reason = (String) payload.get("reason");
+
+            sendAlert(accountNumber,
+                    "SUSPICIOUS ACTIVITY DETECTED",
+                    String.format(
+                        "Your account %s has been blocked. " +
+                                "Reason: %s" +
+                                "Please contact your bank immediately",
+                            accountNumber,reason
+                    ));
+        }
+        catch (Exception e){
+            log.error("Error sending fraud alert: {}",e.getMessage());
+        }
+    }
+
     private void sendAlert(String accountNumber, String subject, String message){
         log.info("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
         log.info("NOTIFICATION SENT");
