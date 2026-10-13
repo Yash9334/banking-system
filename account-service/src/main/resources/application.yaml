@@ -1,41 +1,28 @@
 spring:
   application:
     name: account-service
-datasource:
-  url: jdbc:mysql://localhost:3306/account_db?createDatabaseIfNotExist=true
-  username: root
-  password: root
-  driver-class-name: com.mysql.cj.jdbc.Driver
+  datasource:
+    url: jdbc:mysql://localhost:3306/account_db
+    username: banking_user
+    password: BankingDev_2026!
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
-jpa:
-  hibernate:
-    ddl-auto: update
-  show-sql: true
-  properties:
+  jpa:
     hibernate:
-      dialect: org.hibernate.dialect.MySQLDialect
+      ddl-auto: update
+    show-sql: true
 
-kafka:
-  bootstrap-servers: localhost:9092
-  consumer:
-    group-id: account-service-group
-    auto-offset-reset: earliest
-    key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-    value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
-    properties:
-      spring:
-        json:
-          trusted:
-            packages: "*"
-          use:
-            type:
-              headers: false
-          value:
-            default:
-              type: java.util.HashMap
-  producer:
-    key-serializer: org.apache.kafta.common.serialization.StringSerializer
-    value-serializer: org.springframework.kafta.support.serializer.JsonSerializer
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: account-service-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JacksonJsonDeserializer
+
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JacksonJsonSerializer
 
 server:
   port: 8081
