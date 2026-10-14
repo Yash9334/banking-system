@@ -3,25 +3,23 @@ spring:
     name: payment-service
 
   datasource:
-    url: jdbc:mysql://localhost:3306/payment_db?createDatabaseIfNoExist=true
-    username: root
-    password: root
-    driver-class-name: com.mysql.cj.jdbc.driver
+    url: jdbc:mysql://localhost:3306/payment_db?createDatabaseIfNotExist=true
+    username: banking_user
+    password: BankingDev_2026!
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
     hibernate:
       ddl-auto: update
-    show:sql: true
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MYSQLDialect
+    show-sql: true
+
 
 
   kafka:
     bootstrap-servers: localhost:9092
     producer:
-      key-serializer: org.apache.kafta.common.serialization.StringSerializer
-      value-serializer: org.springframework.kafta.support.serializer.JsonSerializer
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JacksonJsonSerializer
 
 server:
   port: 8083
