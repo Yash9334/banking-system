@@ -195,6 +195,21 @@ public class TransactionService  {
     }
 
     private void completeTransaction(Transaction transaction){
+
+        if (transaction.getStatus() != TransactionStatus.PROCESSING) {
+            log.warn(
+                    "Transaction {} is not PROCESSING. Skipping completion.",
+                    transaction.getId()
+            );
+            return;
+        }
+
+        // Credit the receiver before marking the transaction completed.
+        accountServiceClient.creditBalance(
+                transaction.getReceiverAccountNumber(),
+                transaction.getAmount()
+        );
+
         transaction.setStatus(TransactionStatus.COMPLETED);
         transaction.setCompletedAt(LocalDateTime.now());
         transactionRepository.save(transaction);
