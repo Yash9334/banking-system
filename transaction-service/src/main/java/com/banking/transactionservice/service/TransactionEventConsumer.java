@@ -58,7 +58,7 @@ public class TransactionEventConsumer {
             String otp = String.format("%06d", (int) (Math.random() * 900000) + 100000);
 
             // Store OTP in Redis - expires in 5 minutes
-            String otpKey = "verification:otp" + transactionId;
+            String otpKey = "verification:otp:" + transactionId;
             redisTemplate.opsForValue().set(otpKey,otp, OTP_EXPIRY_MINUTES, TimeUnit.MINUTES);
 
             // Update Status
@@ -79,7 +79,7 @@ public class TransactionEventConsumer {
 
         }
         catch (Exception e){
-            log.error("Error handling verification  required: {}", e.getMessage());
+            log.error("Error handling verification  required: {}", e);
         }
 
     }
@@ -91,7 +91,7 @@ public class TransactionEventConsumer {
             transactionService.processCleanResult(transactionId);
         }
         catch (Exception e){
-            log.error("Error processing fraud check result: {}", e.getMessage());
+            log.error("Error processing fraud check result: {}", e);
         }
     }
 }

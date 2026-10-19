@@ -99,16 +99,24 @@ public class FraudDetectionService {
     }
 
     private boolean isVelocityExceeded(String accountNumber){
-        String key = "fraud:velocity" + accountNumber;
+        String key = "fraud:velocity:" + accountNumber;
         Long count = redisTemplate.opsForValue().increment(key);
 
-        if(count != null && count==1){
-            redisTemplate.expire(key,60, TimeUnit.SECONDS);
+        if (count == null) {
+            log.error("Redis failed to increment velocity counter for account: {}",
+                    accountNumber);
+            throw new IllegalStateException(
+                    "Unable to perform fraud velocity check"
+            );
+        }
+
+        if (count == 1) {
+            redisTemplate.expire(key, 60, TimeUnit.SECONDS);
         }
 
         log.info("Velocity check - account: {} count: {}/{}",accountNumber,count,maxTransactionPerMinute);
 
-        return count != 0 && count>maxTransactionPerMinute;
+        return count>maxTransactionPerMinute;
     }
 
     private boolean isAmountSuspicious(String accountNumber, BigDecimal amount){

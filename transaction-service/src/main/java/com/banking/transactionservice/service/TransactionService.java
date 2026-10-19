@@ -107,7 +107,7 @@ public class TransactionService  {
         Transaction transaction = transactionRepository.findById(transactionID).
                 orElseThrow(()-> new RuntimeException("Transaction not Found " + transactionID));
 
-        String otpKey = "verification:otp" + transactionID;
+        String otpKey = "verification:otp:" + transactionID;
         String storedOtp = redisTemplate.opsForValue().get(otpKey);
 
         // OTP expired
