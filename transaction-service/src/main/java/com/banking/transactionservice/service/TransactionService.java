@@ -134,6 +134,13 @@ public class TransactionService  {
 
 
     private void compensateTransaction(Transaction transaction, String reason) {
+        if (transaction.getStatus() == TransactionStatus.FLAGGED ||
+            transaction.getStatus() == TransactionStatus.COMPLETED) {
+            log.warn("Transaction {} already finalized. Skipping refund.",
+                    transaction.getId());
+            return;
+        }
+
         log.warn("SAGA COMPENSATION - refunding: {} amount: {}",
                 transaction.getSenderAccountNumber(),
                 transaction.getAmount());
@@ -196,7 +203,9 @@ public class TransactionService  {
 
     private void completeTransaction(Transaction transaction){
 
-        if (transaction.getStatus() != TransactionStatus.PROCESSING) {
+        if (transaction.getStatus() != TransactionStatus.PROCESSING
+            && transaction.getStatus() != TransactionStatus.PENDING_VERIFICATION
+        ) {
             log.warn(
                     "Transaction {} is not PROCESSING. Skipping completion.",
                     transaction.getId()
